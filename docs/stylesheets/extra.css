@@ -1,0 +1,39 @@
+/* Custom styles for EKS Infrastructure Template documentation */
+
+:root {
+  --md-primary-fg-color: #3f51b5;
+  --md-primary-fg-color--light: #757de8;
+  --md-primary-fg-color--dark: #002984;
+}
+
+/* Improve code block readability */
+.md-typeset pre > code {
+  font-size: 0.85em;
+}
+
+/* Style admonition blocks */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 4px;
+}
+
+/* Navigation improvements */
+.md-nav__title {
+  font-weight: 700;
+}
+
+/* Table styling */
+.md-typeset table:not([class]) {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color);
+  color: white;
+}
+
+/* Badge styling */
+.md-typeset img[alt*="badge"] {
+  vertical-align: middle;
+}

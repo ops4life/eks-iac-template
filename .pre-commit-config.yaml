@@ -12,6 +12,7 @@ repos:
       - id: check-yaml
         name: Check YAML syntax
         args: ['--allow-multiple-documents']
+        exclude: mkdocs\.yml
       - id: check-added-large-files
         name: Check for large files
         args: ['--maxkb=1000']
@@ -65,3 +66,14 @@ repos:
       - id: gitleaks
         name: Gitleaks secret detection
         description: Detect hardcoded secrets
+
+  # Documentation
+  - repo: local
+    hooks:
+      - id: mkdocs-build
+        name: MkDocs build
+        description: Validate MkDocs documentation builds successfully
+        language: python
+        entry: mkdocs build
+        pass_filenames: false
+        files: ^(docs/|mkdocs\.yml|requirements\.txt)

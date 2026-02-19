@@ -1,5 +1,7 @@
 # EKS Infrastructure Template
 
+[![Documentation](https://img.shields.io/badge/docs-github%20pages-blue)](https://username.github.io/github-repo-template/)
+
 Production-ready EKS infrastructure template with Terraform, Kustomize, and CI/CD pipelines.
 
 ## Features
@@ -141,6 +143,7 @@ kubectl get all -n dev -l app=nginx
 | gitleaks.yaml | PR/Push | Secret detection |
 | release.yaml | Push to main | Semantic release |
 | lint-pr.yaml | PR | PR title validation |
+| docs-deploy.yaml | Push to main / PR | Build and deploy documentation |
 
 ## GitHub Secrets Required
 

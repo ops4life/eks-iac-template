@@ -1,0 +1,17 @@
+# Files that should not be synced from the template
+# when this repository is used as a GitHub template
+
+# Environment-specific configurations
+environments/dev/dev.tfvars
+environments/qa/qa.tfvars
+environments/prod/prod.tfvars
+
+# Auto-generated files
+CHANGELOG.md
+.terraform.lock.hcl
+
+# Repository-specific documentation (URLs auto-configured)
+mkdocs.yml
+README.md
+docs/index.md
+docs/reference/changelog.md

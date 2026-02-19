@@ -34,3 +34,6 @@ terraform.rc
 
 # Ignore Claude configs
 .claude
+
+# MkDocs build output
+site/
