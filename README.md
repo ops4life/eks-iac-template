@@ -67,33 +67,32 @@ kubectl get all -n dev -l app=nginx
 
 ## Architecture
 
-```
-                    +------------------+
-                    |   GitHub Actions |
-                    +--------+---------+
-                             |
-              +--------------+--------------+
-              |                             |
-    +---------v---------+       +-----------v-----------+
-    |  Terraform        |       |  kubectl/Kustomize    |
-    |  (Infrastructure) |       |  (Applications)       |
-    +---------+---------+       +-----------+-----------+
-              |                             |
-    +---------v-----------------------------v-----------+
-    |                    AWS                             |
-    |  +-------------+  +----------------------------+  |
-    |  |     VPC     |  |         EKS Cluster        |  |
-    |  |  +-------+  |  |  +--------+  +---------+  |  |
-    |  |  |Public |  |  |  | Node   |  | Node    |  |  |
-    |  |  |Subnet |  |  |  | Group  |  | Group   |  |  |
-    |  |  +-------+  |  |  | (SPOT) |  |(ON_DEM) |  |  |
-    |  |  +-------+  |  |  +--------+  +---------+  |  |
-    |  |  |Private|  |  |                            |  |
-    |  |  |Subnet |  |  |  +----------------------+  |  |
-    |  |  +-------+  |  |  | ALB Controller       |  |  |
-    |  +-------------+  |  +----------------------+  |  |
-    |                    +----------------------------+  |
-    +----------------------------------------------------+
+```mermaid
+flowchart TB
+    GH[GitHub Actions]
+
+    GH --> TF[Terraform\nInfrastructure]
+    GH --> K8S[kubectl / Kustomize\nApplications]
+
+    subgraph AWS
+        subgraph VPC
+            PUB[Public Subnets]
+            PRI[Private Subnets]
+        end
+
+        subgraph EKS[EKS Cluster]
+            ALB[ALB Controller]
+            SPOT[Node Group\nSPOT]
+            OD[Node Group\nON_DEMAND]
+        end
+    end
+
+    TF --> VPC
+    TF --> EKS
+    K8S --> EKS
+    PUB --> ALB
+    PRI --> SPOT
+    PRI --> OD
 ```
 
 ## Environment Configurations
