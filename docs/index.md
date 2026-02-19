@@ -1,8 +1,8 @@
 # EKS Infrastructure Template
 
-[![Documentation](https://img.shields.io/badge/docs-github%20pages-blue)](https://username.github.io/github-repo-template/)
-[![License](https://img.shields.io/github/license/username/github-repo-template)](https://github.com/username/github-repo-template/blob/main/LICENSE)
-[![Release](https://img.shields.io/github/v/release/username/github-repo-template)](https://github.com/username/github-repo-template/releases)
+[![Documentation](https://img.shields.io/badge/docs-github%20pages-blue)](https://ops4life.github.io/eks-iac-template/)
+[![License](https://img.shields.io/github/license/ops4life/eks-iac-template)](https://github.com/ops4life/eks-iac-template/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/ops4life/eks-iac-template)](https://github.com/ops4life/eks-iac-template/releases)
 
 Production-ready EKS infrastructure template with Terraform, Kustomize, and CI/CD pipelines.
 

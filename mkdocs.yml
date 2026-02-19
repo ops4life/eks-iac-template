@@ -1,10 +1,10 @@
 site_name: EKS Infrastructure Template
 site_description: Production-ready EKS infrastructure template with Terraform, Kustomize, and CI/CD pipelines
 site_author: username
-site_url: https://username.github.io/github-repo-template/
+site_url: https://ops4life.github.io/eks-iac-template/
 
-repo_name: username/github-repo-template
-repo_url: https://github.com/username/github-repo-template
+repo_name: ops4life/eks-iac-template
+repo_url: https://github.com/ops4life/eks-iac-template
 edit_uri: edit/main/docs/
 
 theme:
@@ -94,5 +94,5 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/username/github-repo-template
+      link: https://github.com/ops4life/eks-iac-template
   generator: false

@@ -8,7 +8,7 @@ Thank you for contributing to the EKS Infrastructure Template! This guide explai
 2. **Clone** your fork locally:
 
     ```bash
-    git clone https://github.com/your-username/github-repo-template.git
+    git clone https://github.com/your-ops4life/eks-iac-template.git
     cd github-repo-template
     ```
 
@@ -142,7 +142,7 @@ Open [http://localhost:8000](http://localhost:8000) to preview.
 
 ## Reporting Issues
 
-Use [GitHub Issues](https://github.com/username/github-repo-template/issues) to report:
+Use [GitHub Issues](https://github.com/ops4life/eks-iac-template/issues) to report:
 
 - Bugs with steps to reproduce
 - Feature requests with use cases

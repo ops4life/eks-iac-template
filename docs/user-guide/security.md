@@ -99,7 +99,7 @@ data "aws_iam_policy_document" "github_actions" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:username/github-repo-template:*"]
+      values   = ["repo:ops4life/eks-iac-template:*"]
     }
   }
 }
@@ -149,4 +149,4 @@ env:
 
 ## Reporting Security Issues
 
-Please report security vulnerabilities privately via [GitHub Security Advisories](https://github.com/username/github-repo-template/security/advisories/new) rather than public issues.
+Please report security vulnerabilities privately via [GitHub Security Advisories](https://github.com/ops4life/eks-iac-template/security/advisories/new) rather than public issues.

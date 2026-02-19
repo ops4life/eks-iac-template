@@ -19,7 +19,7 @@ Before you begin, ensure you have the following tools installed:
 Click **Use this template** on GitHub or clone directly:
 
 ```bash
-git clone https://github.com/username/github-repo-template.git my-eks-project
+git clone https://github.com/ops4life/eks-iac-template.git my-eks-project
 cd my-eks-project
 ```
 
