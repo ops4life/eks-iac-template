@@ -131,6 +131,21 @@ terraform {
 
 ### Kustomize Structure
 
+```mermaid
+flowchart TD
+    BASE[base/] --> DEV[overlays/dev]
+    BASE --> QA[overlays/qa]
+    BASE --> PROD[overlays/prod]
+
+    BASE --> KZ[kustomization.yaml]
+    BASE --> DY[deployment.yaml]
+    BASE --> SV[service.yaml]
+    BASE --> CM[configmap.yaml]
+
+    DEV --> DK[kustomization.yaml]
+    DEV --> DP[deployment-patch.yaml]
+```
+
 ```
 k8s/apps/{app-name}/
 ├── base/              # Shared configuration

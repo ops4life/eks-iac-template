@@ -2,6 +2,16 @@
 
 Get your EKS cluster up and running in a few steps.
 
+```mermaid
+flowchart LR
+    A[Use Template] --> B[Configure AWS]
+    B --> C[Customize Variables]
+    C --> D[terraform init]
+    D --> E[terraform apply]
+    E --> F[Configure kubectl]
+    F --> G[Deploy Apps]
+```
+
 ## Prerequisites
 
 Before you begin, ensure you have the following tools installed:

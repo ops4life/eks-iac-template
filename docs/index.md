@@ -24,8 +24,8 @@ This template provides a complete foundation for deploying and managing Amazon E
 flowchart TB
     GH[GitHub Actions]
 
-    GH --> TF[Terraform\nInfrastructure]
-    GH --> K8S[kubectl / Kustomize\nApplications]
+    GH --> TF[Terraform Infrastructure]
+    GH --> K8S[kubectl / Kustomize Applications]
 
     subgraph AWS
         subgraph VPC
@@ -35,8 +35,8 @@ flowchart TB
 
         subgraph EKS[EKS Cluster]
             ALB[ALB Controller]
-            SPOT[Node Group\nSPOT]
-            OD[Node Group\nON_DEMAND]
+            SPOT[Node Group SPOT]
+            OD[Node Group ON_DEMAND]
         end
     end
 
