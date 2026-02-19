@@ -1,0 +1,53 @@
+name: Pre-commit CI
+on:
+  pull_request_target:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6
+
+      - name: Install Terraform-docs
+        uses: jaxxstorm/action-install-gh-release@v2.1.0
+        with:
+          repo: terraform-docs/terraform-docs
+          platform: linux
+          arch: amd64
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Install GitLeaks
+        run: |
+          mkdir -p $RUNNER_TEMP/gitleaks
+          latest_version=$(curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep 'tag_name' | cut -d\" -f4)
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/$latest_version/gitleaks_${latest_version#v}_linux_x64.tar.gz -o $RUNNER_TEMP/gitleaks/gitleaks.tar.gz
+          tar -xvzf $RUNNER_TEMP/gitleaks/gitleaks.tar.gz -C $RUNNER_TEMP/gitleaks
+          sudo mv $RUNNER_TEMP/gitleaks/gitleaks /usr/local/bin/
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit
+        run: |
+          pre-commit install
+          pre-commit run --all-files
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        if: always()
+        with:
+          commit_message: "fix: Automated Changes by Pre-commit"

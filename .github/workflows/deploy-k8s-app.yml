@@ -1,0 +1,215 @@
+name: Deploy Kubernetes Application
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        type: choice
+        options:
+          - dev
+          - qa
+          - prod
+      app_name:
+        description: 'Application to deploy'
+        required: true
+        type: choice
+        options:
+          - nginx
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'deploy'
+        type: choice
+        options:
+          - deploy
+          - rollback
+
+env:
+  KUSTOMIZE_VERSION: '5.3.0'
+  # TODO: Customize - Update cluster name prefix
+  CLUSTER_PREFIX: 'my-project'
+
+jobs:
+  deploy:
+    name: ${{ github.event.inputs.action }} ${{ github.event.inputs.app_name }} - ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    environment:
+      name: ${{ github.event.inputs.environment }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Set EKS Cluster Name
+      id: cluster
+      run: |
+        CLUSTER_NAME="${{ env.CLUSTER_PREFIX }}-${{ github.event.inputs.environment }}-cluster"
+        echo "name=$CLUSTER_NAME" >> $GITHUB_OUTPUT
+        echo "Cluster name: $CLUSTER_NAME"
+
+    - name: Configure kubectl
+      run: |
+        aws eks update-kubeconfig \
+          --region ${{ secrets.AWS_REGION }} \
+          --name ${{ steps.cluster.outputs.name }}
+
+    - name: Verify Cluster Access
+      run: |
+        echo "Verifying cluster connectivity..."
+        kubectl cluster-info
+        echo ""
+        echo "Cluster nodes:"
+        kubectl get nodes
+
+    - name: Setup Kustomize
+      run: |
+        curl -L "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${{ env.KUSTOMIZE_VERSION }}/kustomize_v${{ env.KUSTOMIZE_VERSION }}_linux_amd64.tar.gz" \
+          -o kustomize.tar.gz
+        tar -xzf kustomize.tar.gz
+        sudo mv kustomize /usr/local/bin/
+        kustomize version
+
+    - name: Create Namespace
+      run: |
+        if ! kubectl get namespace ${{ github.event.inputs.environment }} &> /dev/null; then
+          echo "Creating namespace ${{ github.event.inputs.environment }}..."
+          kubectl create namespace ${{ github.event.inputs.environment }}
+        else
+          echo "Namespace ${{ github.event.inputs.environment }} already exists"
+        fi
+
+    - name: Build Kustomize Manifests
+      if: github.event.inputs.action == 'deploy'
+      run: |
+        echo "Building Kustomize manifests for ${{ github.event.inputs.app_name }} in ${{ github.event.inputs.environment }}..."
+        kustomize build k8s/apps/${{ github.event.inputs.app_name }}/overlays/${{ github.event.inputs.environment }} \
+          > /tmp/manifests.yaml
+
+        echo "Generated manifests:"
+        cat /tmp/manifests.yaml
+
+    - name: Apply Manifests
+      if: github.event.inputs.action == 'deploy'
+      run: |
+        echo "Applying manifests to cluster..."
+        kubectl apply -f /tmp/manifests.yaml
+
+    - name: Wait for Deployment
+      if: github.event.inputs.action == 'deploy'
+      run: |
+        echo "Waiting for deployment to complete..."
+        LABEL_SELECTOR="app=${{ github.event.inputs.app_name }}"
+        RESOURCES=$(kubectl get deployment -n ${{ github.event.inputs.environment }} \
+          -l $LABEL_SELECTOR -o name)
+
+        if [ -z "$RESOURCES" ]; then
+          echo "Error: No deployment found for label selector: $LABEL_SELECTOR"
+          exit 1
+        fi
+
+        for RESOURCE in $RESOURCES; do
+          echo "Monitoring rollout status for $RESOURCE..."
+          kubectl rollout status $RESOURCE -n ${{ github.event.inputs.environment }} --timeout=5m
+        done
+
+        echo "All deployments ready!"
+
+    - name: Rollback Deployment
+      if: github.event.inputs.action == 'rollback'
+      run: |
+        echo "Rolling back deployment..."
+        LABEL_SELECTOR="app=${{ github.event.inputs.app_name }}"
+        RESOURCES=$(kubectl get deployment -n ${{ github.event.inputs.environment }} \
+          -l $LABEL_SELECTOR -o name)
+
+        if [ -z "$RESOURCES" ]; then
+          echo "Error: No deployment found for label selector: $LABEL_SELECTOR"
+          exit 1
+        fi
+
+        for RESOURCE in $RESOURCES; do
+          echo "Rolling back $RESOURCE..."
+          kubectl rollout undo $RESOURCE -n ${{ github.event.inputs.environment }}
+        done
+
+    - name: Wait for Rollback
+      if: github.event.inputs.action == 'rollback'
+      run: |
+        echo "Waiting for rollback to complete..."
+        LABEL_SELECTOR="app=${{ github.event.inputs.app_name }}"
+        RESOURCES=$(kubectl get deployment -n ${{ github.event.inputs.environment }} \
+          -l $LABEL_SELECTOR -o name)
+
+        for RESOURCE in $RESOURCES; do
+          echo "Waiting for rollback of $RESOURCE..."
+          kubectl rollout status $RESOURCE -n ${{ github.event.inputs.environment }} --timeout=5m
+        done
+
+    - name: Verify Deployment Status
+      if: always()
+      run: |
+        echo "Deployment status for ${{ github.event.inputs.app_name }} in ${{ github.event.inputs.environment }}:"
+        LABEL_SELECTOR="app=${{ github.event.inputs.app_name }}"
+        kubectl get all -n ${{ github.event.inputs.environment }} -l $LABEL_SELECTOR
+
+    - name: Capture Deployment Info
+      if: always()
+      run: |
+        mkdir -p /tmp/deployment-logs
+        LABEL_SELECTOR="app=${{ github.event.inputs.app_name }}"
+
+        kubectl describe deployment -n ${{ github.event.inputs.environment }} \
+          -l $LABEL_SELECTOR > /tmp/deployment-logs/resource-info.txt || true
+
+        kubectl describe pods -n ${{ github.event.inputs.environment }} \
+          -l $LABEL_SELECTOR > /tmp/deployment-logs/pod-info.txt || true
+
+        kubectl get events -n ${{ github.event.inputs.environment }} \
+          --sort-by='.lastTimestamp' > /tmp/deployment-logs/events.txt || true
+
+        kubectl logs -n ${{ github.event.inputs.environment }} \
+          -l $LABEL_SELECTOR \
+          --tail=100 --prefix=true > /tmp/deployment-logs/pod-logs.txt || true
+
+    - name: Upload Manifests
+      if: github.event.inputs.action == 'deploy'
+      uses: actions/upload-artifact@v6
+      with:
+        name: manifests-${{ github.event.inputs.environment }}-${{ github.event.inputs.app_name }}-${{ github.run_number }}
+        path: /tmp/manifests.yaml
+        retention-days: 30
+
+    - name: Upload Deployment Logs
+      if: always()
+      uses: actions/upload-artifact@v6
+      with:
+        name: deployment-logs-${{ github.event.inputs.environment }}-${{ github.event.inputs.app_name }}-${{ github.run_number }}
+        path: /tmp/deployment-logs/
+        retention-days: 30
+
+    - name: Deployment Summary
+      if: always()
+      run: |
+        echo "========================================================"
+        echo "Deployment Summary"
+        echo "========================================================"
+        echo "Action:        ${{ github.event.inputs.action }}"
+        echo "Application:   ${{ github.event.inputs.app_name }}"
+        echo "Environment:   ${{ github.event.inputs.environment }}"
+        echo "Cluster:       ${{ steps.cluster.outputs.name }}"
+        echo "Namespace:     ${{ github.event.inputs.environment }}"
+        echo "========================================================"

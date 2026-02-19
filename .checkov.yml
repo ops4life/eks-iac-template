@@ -1,0 +1,12 @@
+quiet: true
+framework:
+  - terraform
+  - terraform_plan
+
+skip-check:
+  - CKV_AWS_18        # S3 access logging
+  - CKV2_AWS_62       # S3 event notifications
+  - CKV_AWS_144       # Cross-region replication
+  - CKV_AWS_145       # KMS encryption
+  - CKV_AWS_300       # Abort incomplete multipart
+  - CKV_TF_1          # Ensure Terraform module sources use a commit hash

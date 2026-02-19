@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  labels:
+    app: nginx
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name _;
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
+        }
+
+        location /health {
+            access_log off;
+            return 200 "healthy\n";
+            add_header Content-Type text/plain;
+        }
+    }
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NGINX - EKS Template</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 50px auto;
+                padding: 20px;
+            }
+            .info {
+                background: #f0f0f0;
+                padding: 15px;
+                border-radius: 5px;
+                margin: 10px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>NGINX Application</h1>
+        <div class="info">
+            <p><strong>Status:</strong> Running</p>
+            <p><strong>Version:</strong> 1.0.0</p>
+        </div>
+        <p>Deployed via Kustomize on EKS.</p>
+    </body>
+    </html>
