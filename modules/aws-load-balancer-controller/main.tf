@@ -19,7 +19,7 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
 # IAM role for AWS Load Balancer Controller using IRSA
 module "aws_load_balancer_controller_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
+  version = "~> 6.8"
 
   role_name = "${var.prefix}-${var.environment}-alb-controller-role"
 
