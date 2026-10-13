@@ -187,7 +187,7 @@ jobs:
 
     - name: Upload Manifests
       if: github.event.inputs.action == 'deploy'
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: manifests-${{ github.event.inputs.environment }}-${{ github.event.inputs.app_name }}-${{ github.run_number }}
         path: /tmp/manifests.yaml
@@ -195,7 +195,7 @@ jobs:
 
     - name: Upload Deployment Logs
       if: always()
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: deployment-logs-${{ github.event.inputs.environment }}-${{ github.event.inputs.app_name }}-${{ github.run_number }}
         path: /tmp/deployment-logs/
