@@ -51,6 +51,7 @@ module "eks" {
 
 # Data sources
 data "aws_availability_zones" "available" {
+  #checkov:skip=CKV_AWS_394:AZs are selected by opt-in-status filter and sliced explicitly
   filter {
     name   = "opt-in-status"
     values = ["opt-in-not-required"]
