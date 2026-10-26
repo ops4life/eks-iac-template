@@ -9,6 +9,9 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
+    groups:
+      actions:
+        patterns: ["*"]
     open-pull-requests-limit: 10
 
   - package-ecosystem: "terraform"
@@ -33,4 +36,7 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
+    groups:
+      pip:
+        patterns: ["*"]
     open-pull-requests-limit: 10
