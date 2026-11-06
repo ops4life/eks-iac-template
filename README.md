@@ -166,7 +166,7 @@ flowchart TB
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 3.1 |
@@ -180,7 +180,7 @@ No providers.
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_aws_load_balancer_controller"></a> [aws\_load\_balancer\_controller](#module\_aws\_load\_balancer\_controller) | ./modules/aws-load-balancer-controller | n/a |
 | <a name="module_eks"></a> [eks](#module\_eks) | ./modules/eks | n/a |
 
@@ -191,7 +191,7 @@ No resources.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_ami_type"></a> [ami\_type](#input\_ami\_type) | AMI type for EKS nodes | `string` | `"AL2_x86_64"` | no |
 | <a name="input_availability_zones_count"></a> [availability\_zones\_count](#input\_availability\_zones\_count) | Number of availability zones to use for EKS VPC | `number` | `3` | no |
 | <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | Kubernetes cluster version | `string` | `"1.31"` | no |
@@ -207,7 +207,7 @@ No resources.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_alb_controller_iam_role_arn"></a> [alb\_controller\_iam\_role\_arn](#output\_alb\_controller\_iam\_role\_arn) | ARN of IAM role for AWS Load Balancer Controller |
 | <a name="output_alb_controller_version"></a> [alb\_controller\_version](#output\_alb\_controller\_version) | Version of AWS Load Balancer Controller Helm chart |
 | <a name="output_configure_kubectl"></a> [configure\_kubectl](#output\_configure\_kubectl) | Command to configure kubectl for EKS cluster access |
