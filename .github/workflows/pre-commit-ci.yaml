@@ -55,6 +55,8 @@ jobs:
         run: pip install pre-commit -r requirements.txt
 
       - name: Run pre-commit
+        env:
+          GITHUB_TOKEN: ${{ github.token }} # tflint --init plugin download is rate limited without it
         run: |
           pre-commit install
           pre-commit run --all-files
