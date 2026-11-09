@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3](https://github.com/ops4life/eks-iac-template/compare/v1.1.2...v1.1.3) (2026-11-09)
+
+
+### Bug Fixes
+
+* install mkdocs deps and pin terraform in pre-commit-ci ([#36](https://github.com/ops4life/eks-iac-template/issues/36)) ([b468794](https://github.com/ops4life/eks-iac-template/commit/b4687947b1fc8a8e6fa6fab581603617ab662b83))
+
 ## [1.1.2](https://github.com/ops4life/eks-iac-template/compare/v1.1.1...v1.1.2) (2026-11-09)
 
 
