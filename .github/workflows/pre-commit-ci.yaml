@@ -46,8 +46,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p $RUNNER_TEMP/gitleaks
-          latest_version=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep 'tag_name' | cut -d\" -f4)
-          curl -fsSL https://github.com/gitleaks/gitleaks/releases/download/$latest_version/gitleaks_${latest_version#v}_linux_x64.tar.gz -o $RUNNER_TEMP/gitleaks/gitleaks.tar.gz
+          latest_version=$(curl -fsSL --retry 3 --retry-all-errors -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep 'tag_name' | cut -d\" -f4)
+          curl -fsSL --retry 3 --retry-all-errors https://github.com/gitleaks/gitleaks/releases/download/$latest_version/gitleaks_${latest_version#v}_linux_x64.tar.gz -o $RUNNER_TEMP/gitleaks/gitleaks.tar.gz
           tar -xvzf $RUNNER_TEMP/gitleaks/gitleaks.tar.gz -C $RUNNER_TEMP/gitleaks
           sudo mv $RUNNER_TEMP/gitleaks/gitleaks /usr/local/bin/
 
