@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.5](https://github.com/ops4life/eks-iac-template/compare/v1.1.4...v1.1.5) (2026-11-09)
+
+
+### Bug Fixes
+
+* authenticate and fail fast in the GitLeaks install step ([#38](https://github.com/ops4life/eks-iac-template/issues/38)) ([f12e22e](https://github.com/ops4life/eks-iac-template/commit/f12e22e2a167f36cb363a374173cd8734d8fc206))
+
 ## [1.1.4](https://github.com/ops4life/eks-iac-template/compare/v1.1.3...v1.1.4) (2026-11-09)
 
 
