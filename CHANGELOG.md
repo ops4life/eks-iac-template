@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.7](https://github.com/ops4life/eks-iac-template/compare/v1.1.6...v1.1.7) (2026-11-09)
+
+
+### Bug Fixes
+
+* **ci:** pass GITHUB_TOKEN to pre-commit so tflint --init can download plugins ([#40](https://github.com/ops4life/eks-iac-template/issues/40)) ([8485137](https://github.com/ops4life/eks-iac-template/commit/8485137f4688ce13db2b3e65cb845f3aaa2b7879))
+
 ## [1.1.6](https://github.com/ops4life/eks-iac-template/compare/v1.1.5...v1.1.6) (2026-11-09)
 
 
