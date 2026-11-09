@@ -18,8 +18,14 @@ jobs:
         with:
           python-version: "3.10"
 
+      - name: Read Terraform version
+        id: tfv
+        run: echo "version=$(tr -d '[:space:]' < .terraform-version)" >> "$GITHUB_OUTPUT"
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ steps.tfv.outputs.version }}
 
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v6
@@ -28,6 +34,7 @@ jobs:
         uses: jaxxstorm/action-install-gh-release@v2.1.0
         with:
           repo: terraform-docs/terraform-docs
+          tag: v0.24.0
           platform: linux
           arch: amd64
 
@@ -43,7 +50,7 @@ jobs:
           sudo mv $RUNNER_TEMP/gitleaks/gitleaks /usr/local/bin/
 
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: pip install pre-commit -r requirements.txt
 
       - name: Run pre-commit
         run: |
