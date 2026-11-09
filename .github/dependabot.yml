@@ -10,6 +10,9 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 10
+    groups:
+      github-actions:
+        patterns: ["*"]
 
   - package-ecosystem: "terraform"
     directories:
@@ -23,6 +26,10 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 10
+    groups:
+      # majors of terraform-aws-modules (eks 21, vpc 6, iam 6) stay separate PRs for manual review
+      terraform-minor-patch:
+        update-types: ["minor", "patch"]
 
   - package-ecosystem: "pip"
     directory: "/"
@@ -34,3 +41,6 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 10
+    groups:
+      pip:
+        patterns: ["*"]
