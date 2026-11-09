@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.8](https://github.com/ops4life/eks-iac-template/compare/v1.1.7...v1.1.8) (2026-11-09)
+
+
+### Bug Fixes
+
+* **ci:** auto-merge Dependabot PRs only for minor and patch updates ([#41](https://github.com/ops4life/eks-iac-template/issues/41)) ([28a81ab](https://github.com/ops4life/eks-iac-template/commit/28a81ab14a8e7f28d76bbb5a7e95156853c20984))
+
 ## [1.1.7](https://github.com/ops4life/eks-iac-template/compare/v1.1.6...v1.1.7) (2026-11-09)
 
 
