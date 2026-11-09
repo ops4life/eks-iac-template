@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2](https://github.com/ops4life/eks-iac-template/compare/v1.1.1...v1.1.2) (2026-11-09)
+
+
+### Bug Fixes
+
+* run pre-commit-ci on the PR head ([#35](https://github.com/ops4life/eks-iac-template/issues/35)) ([78e3d3e](https://github.com/ops4life/eks-iac-template/commit/78e3d3ebbb2f69328b7dd1860d05fcea2dc06462))
+
 ## [1.1.1](https://github.com/ops4life/eks-iac-template/compare/v1.1.0...v1.1.1) (2026-10-26)
 
 
