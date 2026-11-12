@@ -1,6 +1,6 @@
 output "iam_role_arn" {
   description = "ARN of IAM role for AWS Load Balancer Controller"
-  value       = module.aws_load_balancer_controller_irsa.iam_role_arn
+  value       = module.aws_load_balancer_controller_irsa.arn
 }
 
 output "iam_policy_arn" {

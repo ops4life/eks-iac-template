@@ -1,7 +1,7 @@
 # VPC Module for EKS
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   name = "${var.prefix}-${var.environment}-vpc"
 
@@ -29,22 +29,21 @@ module "vpc" {
 # EKS Cluster Module
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0"
+  version = "~> 21.0"
 
-  cluster_name    = "${var.prefix}-${var.environment}-cluster"
-  cluster_version = var.cluster_version
+  name               = "${var.prefix}-${var.environment}-cluster"
+  kubernetes_version = var.cluster_version
 
-  cluster_endpoint_public_access           = var.cluster_endpoint_public_access
+  endpoint_public_access                   = var.cluster_endpoint_public_access
   enable_cluster_creator_admin_permissions = var.enable_cluster_creator_admin_permissions
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  eks_managed_node_group_defaults = {
-    ami_type = var.ami_type
+  # v21 removed eks_managed_node_group_defaults: apply the default AMI type per node group.
+  eks_managed_node_groups = {
+    for name, group in var.node_groups : name => merge({ ami_type = var.ami_type }, group)
   }
-
-  eks_managed_node_groups = var.node_groups
 
   tags = var.tags
 }
@@ -70,7 +69,7 @@ resource "null_resource" "cleanup_cni" {
   triggers = {
     cluster_name      = module.eks.cluster_name
     vpc_id            = module.vpc.vpc_id
-    region            = data.aws_region.current.name
+    region            = data.aws_region.current.region
     cleanup_wait_time = var.cni_cleanup_wait_time
   }
 
