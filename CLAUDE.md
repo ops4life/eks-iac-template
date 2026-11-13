@@ -35,7 +35,7 @@ kubectl apply -k k8s/apps/nginx/overlays/dev/
 
 ## Architecture
 
-- **Terraform >= 1.0**, AWS provider ~> 5.0
+- **Terraform >= 1.0**, AWS provider ~> 6.0
 - **Backend**: Local by default, S3 backend template in versions.tf
 - **Modules**: `modules/eks` (VPC + EKS), `modules/aws-load-balancer-controller`
 - **Environments**: dev, qa, prod with tfvars in `environments/{env}/{env}.tfvars`
