@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1](https://github.com/ops4life/eks-iac-template/compare/v1.2.0...v1.2.1) (2026-11-13)
+
+
+### Bug Fixes
+
+* **deps:** upgrade aws provider 6 with eks 21, vpc 6 and iam 6 modules ([#48](https://github.com/ops4life/eks-iac-template/issues/48)) ([340ad1f](https://github.com/ops4life/eks-iac-template/commit/340ad1f691b0c80c9138f62b8b9c3ee3ffaa3db4))
+
 # [1.2.0](https://github.com/ops4life/eks-iac-template/compare/v1.1.8...v1.2.0) (2026-11-09)
 
 
