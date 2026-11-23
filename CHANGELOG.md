@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2](https://github.com/ops4life/eks-iac-template/compare/v1.2.1...v1.2.2) (2026-11-23)
+
+
+### Bug Fixes
+
+* **ci:** merge with --admin in automerge so the otto App bypass applies ([#51](https://github.com/ops4life/eks-iac-template/issues/51)) ([bcbd19a](https://github.com/ops4life/eks-iac-template/commit/bcbd19aaa57a61a5b25676a1185c7f7cc14cec04))
+
 ## [1.2.1](https://github.com/ops4life/eks-iac-template/compare/v1.2.0...v1.2.1) (2026-11-13)
 
 
